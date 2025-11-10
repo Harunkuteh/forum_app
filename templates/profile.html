@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ user.username }}'s Profile</h2>
+<p>Email: {{ user.email }}</p>
+<h3>Posts by {{ user.username }}</h3>
+{% for post in user.posts %}
+<div class="post-card">
+    <h4><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a></h4>
+    <p>{{ post.content[:150] }}{% if post.content|length > 150 %}...{% endif %}</p>
+    <small>{{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
+</div>
+{% else %}
+<p>No posts yet.</p>
+{% endfor %}
+{% endblock %}

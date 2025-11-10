@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Forum Posts</h1>
+
+<!-- ปุ่มสร้างโพสต์ -->
+<a href="{{ url_for('new_post') }}" class="create-post-btn">Create New Post</a>
+
+{% for post in posts %}
+<div class="post-card">
+    <h3><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+    <p>{{ post.content[:150] }}{% if post.content|length > 150 %}...{% endif %}</p>
+
+    <!-- Post Meta -->
+    <div class="post-meta">
+        <span class="author">
+            By <a href="{{ url_for('profile', user_id=post.author.id) }}" class="profile-link">{{ post.author.username }}</a>
+        </span>
+        <span class="date">{{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</span>
+
+        <!-- Delete button -->
+        {% if current_user.is_authenticated and (current_user.id == post.user_id or current_user.is_admin) %}
+        <a href="{{ url_for('delete_post', post_id=post.id) }}" class="delete-btn">Delete</a>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

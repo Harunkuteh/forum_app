@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<h3>User List</h3>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Admin</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+            <td>
+    {% if not user.is_admin %}
+        <a href="{{ url_for('make_admin', user_id=user.id) }}" class="action-btn">Make Admin</a>
+        <a href="{{ url_for('delete_user', user_id=user.id) }}" class="delete-btn">Delete</a>
+    {% else %}
+        Admin
+    {% endif %}
+</td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
